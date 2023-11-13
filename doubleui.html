@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Teller App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input {
+      margin-bottom: 10px;
+    }
+
+    #totalDeposit {
+      border: 1px solid #ccc;
+      padding: 5px;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button.cancel {
+      background-color: #f44336;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Bank Teller App</h2>
+
+  <label>
+    Transaction Type:
+    <input type="radio" name="transactionType" value="deposit" checked> Deposit
+    <input type="radio" name="transactionType" value="withdrawal"> Withdrawal
+    <input type="radio" name="transactionType" value="splitDeposit"> Split Deposit
+  </label>
+
+  <label>
+    Account Number:
+    <input type="text" id="accountNumber">
+  </label>
+
+  <label>
+    Transaction #:
+    <input type="text" id="transactionNumber" readonly>
+  </label>
+
+  <label>
+    Cash In Amount:
+    <input type="text" id="cashInAmount">
+  </label>
+
+  <label>
+    On Us Check Amount:
+    <input type="text" id="onUsCheckAmount">
+  </label>
+
+  <label>
+    Not On Us Check Amount:
+    <input type="text" id="notOnUsCheckAmount">
+  </label>
+
+  <label>
+    Total Deposit:
+    <div id="totalDeposit" readonly>0</div>
+  </label>
+
+  <button onclick="cancelTransaction()" class="cancel">Cancel</button>
+  <button onclick="acceptTransaction()">Accept</button>
+
+  <script>
+    let transactionCount = localStorage.getItem('transactionCount') || 1000;
+
+    // Set the initial transaction number when the page loads
+    document.getElementById('transactionNumber').value = generateTransactionNumber();
+
+    function generateTransactionNumber() {
+      localStorage.setItem('transactionCount', ++transactionCount);
+      return `TX${transactionCount}`;
+    }
+
+    function updateTotalDeposit() {
+      const cashIn = parseFloat(document.getElementById('cashInAmount').value) || 0;
+      const onUsCheck = parseFloat(document.getElementById('onUsCheckAmount').value) || 0;
+      const notOnUsCheck = parseFloat(document.getElementById('notOnUsCheckAmount').value) || 0;
+
+      const totalDeposit = cashIn + onUsCheck + notOnUsCheck;
+      document.getElementById('totalDeposit').textContent = totalDeposit.toFixed(2);
+    }
+
+    function cancelTransaction() {
+      // Reset form fields on cancel
+      document.getElementById('accountNumber').value = '';
+      document.getElementById('transactionNumber').value = '';
+      document.getElementById('cashInAmount').value = '';
+      document.getElementById('onUsCheckAmount').value = '';
+      document.getElementById('notOnUsCheckAmount').value = '';
+      document.getElementById('totalDeposit').textContent = '0';
+    }
+
+    function acceptTransaction() {
+      // Perform transaction processing here (not implemented in this example)
+      // You may want to send data to a server for backend processing and database updates
+
+      // Show the generated transaction number
+      document.getElementById('transactionNumber').value = generateTransactionNumber();
+
+      // Clear form fields for a new transaction
+      document.getElementById('accountNumber').value = '';
+      document.getElementById('cashInAmount').value = '';
+      document.getElementById('onUsCheckAmount').value = '';
+      document.getElementById('notOnUsCheckAmount').value = '';
+      document.getElementById('totalDeposit').textContent = '0';
+    }
+
+    // Attach event listeners to update total deposit on input change
+    document.getElementById('cashInAmount').addEventListener('input', updateTotalDeposit);
+    document.getElementById('onUsCheckAmount').addEventListener('input', updateTotalDeposit);
+    document.getElementById('notOnUsCheckAmount').addEventListener('input', updateTotalDeposit);
+  </script>
+</body>
+
+</html>
