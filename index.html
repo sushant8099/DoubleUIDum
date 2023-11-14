@@ -45,6 +45,29 @@
         <input type="text" id="transactionNumber" readonly>
     </label>
 
+    <!-- Withdrawal Fields -->
+    <div class="transaction-type-fields" id="withdrawalFields">
+        <label>
+            Transaction #:
+            <input type="text" id="transactionNumberWithdrawal" readonly>
+        </label>
+
+        <label>
+            Check #1 Amount:
+            <input type="text" id="check1Amount" oninput="updateTotalWithdrawal()">
+        </label>
+
+        <label>
+            Check #2 Amount:
+            <input type="text" id="check2Amount" oninput="updateTotalWithdrawal()">
+        </label>
+
+        <label>
+            Total Withdrawal:
+            <div id="totalWithdrawal" readonly>0</div>
+        </label>
+    </div>
+
     <!-- Deposit Fields -->
     <div class="transaction-type-fields" id="depositFields">
         <label>
@@ -65,24 +88,6 @@
         <label>
             Total Deposit:
             <div id="totalDeposit" readonly>0</div>
-        </label>
-    </div>
-
-    <!-- Withdrawal Fields -->
-    <div class="transaction-type-fields" id="withdrawalFields">
-        <label>
-            Check #1 Amount:
-            <input type="text" id="check1Amount" oninput="updateTotalWithdrawal()">
-        </label>
-
-        <label>
-            Check #2 Amount:
-            <input type="text" id="check2Amount" oninput="updateTotalWithdrawal()">
-        </label>
-
-        <label>
-            Total Withdrawal:
-            <div id="totalWithdrawal" readonly>0</div>
         </label>
     </div>
 
@@ -133,6 +138,9 @@
             // Set the initial transaction number when the page loads or when switching transaction types
             if (showTransactionNumber) {
                 document.getElementById('transactionNumber').value = generateTransactionNumber();
+            } else {
+                // For withdrawal type, also set the transaction number
+                document.getElementById('transactionNumberWithdrawal').value = generateTransactionNumber();
             }
         }
 
@@ -140,6 +148,7 @@
             // Reset form fields on cancel
             document.getElementById('accountNumber').value = '';
             document.getElementById('transactionNumber').value = '';
+            document.getElementById('transactionNumberWithdrawal').value = '';
             document.getElementById('cashInAmount').value = '';
             document.getElementById('onUsCheckAmount').value = '';
             document.getElementById('notOnUsCheckAmount').value = '';
