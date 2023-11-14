@@ -136,41 +136,8 @@
     <button onclick="acceptTransaction()">Accept</button>
 
     <script>
-        let transactionCount = localStorage.getItem('transactionCount') || 1000;
-
-        // Set the initial transaction number when the page loads
-        document.getElementById('transactionNumber').value = generateTransactionNumber();
-        document.getElementById('transactionNumberWithdrawal').value = generateTransactionNumber();
-
         function generateTransactionNumber() {
-            localStorage.setItem('transactionCount', ++transactionCount);
-            return `TX${transactionCount}`;
-        }
-
-        function updateTotalDeposit() {
-            const cashIn = parseFloat(document.getElementById('cashInAmount').value) || 0;
-            const onUsCheck = parseFloat(document.getElementById('onUsCheckAmount').value) || 0;
-            const notOnUsCheck = parseFloat(document.getElementById('notOnUsCheckAmount').value) || 0;
-
-            const totalDeposit = cashIn + onUsCheck + notOnUsCheck;
-            document.getElementById('totalDeposit').textContent = totalDeposit.toFixed(2);
-        }
-
-        function updateTotalWithdrawal() {
-            const check1 = parseFloat(document.getElementById('check1Amount').value) || 0;
-            const check2 = parseFloat(document.getElementById('check2Amount').value) || 0;
-
-            const totalWithdrawal = check1 + check2;
-            document.getElementById('totalWithdrawal').textContent = totalWithdrawal.toFixed(2);
-        }
-
-        function updateTotalSplitDeposit() {
-            const cashIn = parseFloat(document.getElementById('splitCashInAmount').value) || 0;
-            const onUsCheck = parseFloat(document.getElementById('splitOnUsCheckAmount').value) || 0;
-            const notOnUsCheck = parseFloat(document.getElementById('splitNotOnUsCheckAmount').value) || 0;
-
-            const totalSplitDeposit = cashIn + onUsCheck + notOnUsCheck;
-            document.getElementById('totalSplitDeposit').textContent = totalSplitDeposit.toFixed(2);
+            return `TX${Math.floor(1000 + Math.random() * 9000)}`;
         }
 
         function showFields(transactionType) {
@@ -184,6 +151,12 @@
             const showTransactionNumber = transactionType !== 'withdrawal';
             document.getElementById('transactionNumberLabel').style.display = showTransactionNumber ? 'block' : 'none';
             document.getElementById('transactionNumberLabelWithdrawal').style.display = showTransactionNumber ? 'block' : 'none';
+
+            // Set the initial transaction number when the page loads or when switching transaction types
+            if (showTransactionNumber) {
+                document.getElementById('transactionNumber').value = generateTransactionNumber();
+                document.getElementById('transactionNumberWithdrawal').value = generateTransactionNumber();
+            }
         }
 
         function cancelTransaction() {
@@ -244,6 +217,9 @@
         document.getElementById('splitCashInAmount').addEventListener('input', updateTotalSplitDeposit);
         document.getElementById('splitOnUsCheckAmount').addEventListener('input', updateTotalSplitDeposit);
         document.getElementById('splitNotOnUsCheckAmount').addEventListener('input', updateTotalSplitDeposit);
+        
+        // Set the initial transaction number when the page loads
+        showFields('deposit');
     </script>
 </body>
 </html>
