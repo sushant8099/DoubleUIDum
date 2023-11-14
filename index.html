@@ -1,139 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bank Teller App</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Teller App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
 
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
 
-    input {
-      margin-bottom: 10px;
-    }
+        input {
+            margin-bottom: 10px;
+        }
 
-    #totalDeposit {
-      border: 1px solid #ccc;
-      padding: 5px;
-      margin-bottom: 10px;
-      display: inline-block;
-    }
+        #totalDeposit {
+            border: 1px solid #ccc;
+            padding: 5px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
 
-    button {
-      padding: 10px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
 
-    button.cancel {
-      background-color: #f44336;
-    }
-  </style>
+        button.cancel {
+            background-color: #f44336;
+        }
+    </style>
 </head>
-
 <body>
-  <h2>Bank Teller App</h2>
+    <h2>Bank Teller App</h2>
+    
+    <label>
+        Transaction Type:
+        <input type="radio" name="transactionType" value="deposit" checked> Deposit
+        <input type="radio" name="transactionType" value="withdrawal"> Withdrawal
+        <input type="radio" name="transactionType" value="splitDeposit"> Split Deposit
+    </label>
 
-  <label>
-    Transaction Type:
-    <input type="radio" name="transactionType" value="deposit" checked> Deposit
-    <input type="radio" name="transactionType" value="withdrawal"> Withdrawal
-    <input type="radio" name="transactionType" value="splitDeposit"> Split Deposit
-  </label>
+    <label>
+        Account Number:
+        <input type="text" id="accountNumber">
+    </label>
 
-  <label>
-    Account Number:
-    <input type="text" id="accountNumber">
-  </label>
+    <label>
+        Transaction #:
+        <input type="text" id="transactionNumber" readonly>
+    </label>
 
-  <label>
-    Transaction #:
-    <input type="text" id="transactionNumber" readonly>
-  </label>
+    <!-- Deposit Fields -->
+    <label>
+        Cash In Amount:
+        <input type="text" id="cashInAmount">
+    </label>
 
-  <label>
-    Cash In Amount:
-    <input type="text" id="cashInAmount">
-  </label>
+    <label>
+        On Us Check Amount:
+        <input type="text" id="onUsCheckAmount">
+    </label>
 
-  <label>
-    On Us Check Amount:
-    <input type="text" id="onUsCheckAmount">
-  </label>
+    <label>
+        Not On Us Check Amount:
+        <input type="text" id="notOnUsCheckAmount">
+    </label>
 
-  <label>
-    Not On Us Check Amount:
-    <input type="text" id="notOnUsCheckAmount">
-  </label>
+    <!-- Withdrawal Fields -->
+    <label>
+        Check #1 Amount:
+        <input type="text" id="check1Amount">
+    </label>
 
-  <label>
-    Total Deposit:
-    <div id="totalDeposit" readonly>0</div>
-  </label>
+    <label>
+        Check #2 Amount:
+        <input type="text" id="check2Amount">
+    </label>
 
-  <button onclick="cancelTransaction()" class="cancel">Cancel</button>
-  <button onclick="acceptTransaction()">Accept</button>
+    <!-- Split Deposit Fields -->
+    <label>
+        Cash In Amount (Split):
+        <input type="text" id="splitCashInAmount">
+    </label>
 
-  <script>
-    let transactionCount = localStorage.getItem('transactionCount') || 1000;
+    <label>
+        On Us Check Amount (Split):
+        <input type="text" id="splitOnUsCheckAmount">
+    </label>
 
-    // Set the initial transaction number when the page loads
-    document.getElementById('transactionNumber').value = generateTransactionNumber();
+    <label>
+        Not On Us Check Amount (Split):
+        <input type="text" id="splitNotOnUsCheckAmount">
+    </label>
 
-    function generateTransactionNumber() {
-      localStorage.setItem('transactionCount', ++transactionCount);
-      return `TX${transactionCount}`;
-    }
+    <label>
+        Total Deposit (Split):
+        <div id="totalSplitDeposit" readonly>0</div>
+    </label>
 
-    function updateTotalDeposit() {
-      const cashIn = parseFloat(document.getElementById('cashInAmount').value) || 0;
-      const onUsCheck = parseFloat(document.getElementById('onUsCheckAmount').value) || 0;
-      const notOnUsCheck = parseFloat(document.getElementById('notOnUsCheckAmount').value) || 0;
+    <button onclick="cancelTransaction()" class="cancel">Cancel</button>
+    <button onclick="acceptTransaction()">Accept</button>
 
-      const totalDeposit = cashIn + onUsCheck + notOnUsCheck;
-      document.getElementById('totalDeposit').textContent = totalDeposit.toFixed(2);
-    }
+    <script>
+        let transactionCount = localStorage.getItem('transactionCount') || 1000;
 
-    function cancelTransaction() {
-      // Reset form fields on cancel
-      document.getElementById('accountNumber').value = '';
-      document.getElementById('transactionNumber').value = '';
-      document.getElementById('cashInAmount').value = '';
-      document.getElementById('onUsCheckAmount').value = '';
-      document.getElementById('notOnUsCheckAmount').value = '';
-      document.getElementById('totalDeposit').textContent = '0';
-    }
+        // Set the initial transaction number when the page loads
+        document.getElementById('transactionNumber').value = generateTransactionNumber();
 
-    function acceptTransaction() {
-      // Perform transaction processing here (not implemented in this example)
-      // You may want to send data to a server for backend processing and database updates
+        function generateTransactionNumber() {
+            localStorage.setItem('transactionCount', ++transactionCount);
+            return `TX${transactionCount}`;
+        }
 
-      // Show the generated transaction number
-      document.getElementById('transactionNumber').value = generateTransactionNumber();
+        function updateTotalDeposit() {
+            const cashIn = parseFloat(document.getElementById('cashInAmount').value) || 0;
+            const onUsCheck = parseFloat(document.getElementById('onUsCheckAmount').value) || 0;
+            const notOnUsCheck = parseFloat(document.getElementById('notOnUsCheckAmount').value) || 0;
 
-      // Clear form fields for a new transaction
-      document.getElementById('accountNumber').value = '';
-      document.getElementById('cashInAmount').value = '';
-      document.getElementById('onUsCheckAmount').value = '';
-      document.getElementById('notOnUsCheckAmount').value = '';
-      document.getElementById('totalDeposit').textContent = '0';
-    }
+            const totalDeposit = cashIn + onUsCheck + notOnUsCheck;
+            document.getElementById('totalDeposit').textContent = totalDeposit.toFixed(2);
+        }
 
-    // Attach event listeners to update total deposit on input change
-    document.getElementById('cashInAmount').addEventListener('input', updateTotalDeposit);
-    document.getElementById('onUsCheckAmount').addEventListener('input', updateTotalDeposit);
-    document.getElementById('notOnUsCheckAmount').addEventListener('input', updateTotalDeposit);
-  </script>
+        function updateTotalSplitDeposit() {
+            const cashIn = parseFloat(document.getElementById('splitCashInAmount').value) || 0;
+            const onUsCheck = parseFloat(document.getElementById('splitOnUsCheckAmount').value) || 0;
+            const notOnUsCheck = parseFloat(document.getElementById('splitNotOnUsCheckAmount').value) || 0;
+
+            const totalSplitDeposit = cashIn + onUsCheck + notOnUsCheck;
+            document.getElementById('totalSplitDeposit').textContent = totalSplitDeposit.toFixed(2);
+        }
+
+        function cancelTransaction() {
+            // Reset form fields on cancel
+            document.getElementById('accountNumber').value = '';
+            document.getElementById('transactionNumber').value = '';
+            document.getElementById('cashInAmount').value = '';
+            document.getElementById('onUsCheckAmount').value = '';
+            document.getElementById('notOnUsCheckAmount').value = '';
+
+            document.getElementById('check1Amount').value = '';
+            document.getElementById('check2Amount').value = '';
+
+            document.getElementById('splitCashInAmount').value = '';
+            document.getElementById('splitOnUsCheckAmount').value = '';
+            document.getElementById('splitNotOnUsCheckAmount').value = '';
+            document.getElementById('totalSplitDeposit').textContent = '0';
+        }
+
+        function acceptTransaction() {
+            // Perform transaction processing here (not implemented in this example)
+            // You may want to send data to a server for backend processing and database updates
+
+            // Show the generated transaction number
+            document.getElementById('transactionNumber').value = generateTransactionNumber();
+
+            // Clear form fields for a new transaction
+            document.getElementById('accountNumber').value = '';
+            document.getElementById('cashInAmount').value = '';
+            document.getElementById('onUsCheckAmount').value = '';
+            document.getElementById('notOnUsCheckAmount').value = '';
+            document.getElementById('totalDeposit').textContent = '0';
+
+            document.getElementById('check1Amount').value = '';
+            document.getElementById('check2Amount').value = '';
+
+            document.getElementById('splitCashInAmount').value = '';
+            document.getElementById('splitOnUsCheckAmount').value = '';
+            document.getElementById('splitNotOnUsCheckAmount').value = '';
+            document.getElementById('totalSplitDeposit').textContent = '0';
+        }
+
+        // Attach event listeners to update total deposit on input change
+        document.getElementById('cashInAmount').addEventListener('input', updateTotalDeposit);
+        document.getElementById('onUsCheckAmount').addEventListener('input', updateTotalDeposit);
+        document.getElementById('notOnUsCheckAmount').addEventListener('input', updateTotalDeposit);
+
+        // Attach event listeners to update total split deposit on input change
+        document.getElementById('splitCashInAmount').addEventListener('input', updateTotalSplitDeposit);
+        document.getElementById('splitOnUsCheckAmount').addEventListener('input', updateTotalSplitDeposit);
+        document.getElementById('splitNotOnUsCheckAmount').addEventListener('input', updateTotalSplitDeposit);
+    </script>
 </body>
-
 </html>
