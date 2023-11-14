@@ -18,6 +18,10 @@
         input {
             margin-bottom: 10px;
         }
+
+        .transaction-type-fields {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -30,13 +34,41 @@
         <input type="radio" name="transactionType" value="splitDeposit" onclick="showFields('splitDeposit')"> Split Deposit
     </label>
 
-    <!-- Withdrawal Fields -->
-    <div class="transaction-type-fields" id="withdrawalFields">
+    <label>
+        Account Number:
+        <input type="text" id="accountNumber">
+    </label>
+
+    <label class="transaction-type-fields" id="transactionNumberLabel">
+        Transaction #:
+        <input type="text" id="transactionNumber" readonly>
+    </label>
+
+    <!-- Deposit Fields -->
+    <div class="transaction-type-fields" id="depositFields">
         <label>
-            Transaction #:
-            <input type="text" id="transactionNumberWithdrawal" readonly>
+            Cash In Amount:
+            <input type="text" id="cashInAmount">
         </label>
 
+        <label>
+            On Us Check Amount:
+            <input type="text" id="onUsCheckAmount">
+        </label>
+
+        <label>
+            Not On Us Check Amount:
+            <input type="text" id="notOnUsCheckAmount">
+        </label>
+
+        <label>
+            Total Deposit:
+            <div id="totalDeposit" readonly>0</div>
+        </label>
+    </div>
+
+    <!-- Withdrawal Fields -->
+    <div class="transaction-type-fields" id="withdrawalFields">
         <label>
             Check #1 Amount:
             <input type="text" id="check1Amount">
@@ -53,19 +85,129 @@
         </label>
     </div>
 
+    <!-- Split Deposit Fields -->
+    <div class="transaction-type-fields" id="splitDepositFields">
+        <label>
+            Cash In Amount (Split):
+            <input type="text" id="splitCashInAmount">
+        </label>
+
+        <label>
+            On Us Check Amount (Split):
+            <input type="text" id="splitOnUsCheckAmount">
+        </label>
+
+        <label>
+            Not On Us Check Amount (Split):
+            <input type="text" id="splitNotOnUsCheckAmount">
+        </label>
+
+        <label>
+            Total Split Deposit:
+            <div id="totalSplitDeposit" readonly>0</div>
+        </label>
+    </div>
+
+    <button onclick="cancelTransaction()" class="cancel">Cancel</button>
+    <button onclick="acceptTransaction()">Accept</button>
+
     <script>
         function generateTransactionNumber() {
             return `TX${Math.floor(1000 + Math.random() * 9000)}`;
         }
 
         function showFields(transactionType) {
+            // Hide all transaction-type fields
+            document.querySelectorAll('.transaction-type-fields').forEach(field => field.style.display = 'none');
+
             // Show the selected transaction-type fields
-            document.getElementById('withdrawalFields').style.display = (transactionType === 'withdrawal') ? 'block' : 'none';
+            document.getElementById(`${transactionType}Fields`).style.display = 'block';
+
+            // Show/hide transaction number based on transaction type
+            const showTransactionNumber = transactionType !== 'withdrawal';
+            document.getElementById('transactionNumberLabel').style.display = showTransactionNumber ? 'block' : 'none';
 
             // Set the initial transaction number when the page loads or when switching transaction types
-            if (transactionType === 'withdrawal') {
-                document.getElementById('transactionNumberWithdrawal').value = generateTransactionNumber();
+            if (showTransactionNumber) {
+                document.getElementById('transactionNumber').value = generateTransactionNumber();
             }
+        }
+
+        function cancelTransaction() {
+            // Reset form fields on cancel
+            document.getElementById('accountNumber').value = '';
+            document.getElementById('transactionNumber').value = '';
+            document.getElementById('cashInAmount').value = '';
+            document.getElementById('onUsCheckAmount').value = '';
+            document.getElementById('notOnUsCheckAmount').value = '';
+            document.getElementById('totalDeposit').textContent = '0';
+
+            document.getElementById('check1Amount').value = '';
+            document.getElementById('check2Amount').value = '';
+            document.getElementById('totalWithdrawal').textContent = '0';
+
+            document.getElementById('splitCashInAmount').value = '';
+            document.getElementById('splitOnUsCheckAmount').value = '';
+            document.getElementById('splitNotOnUsCheckAmount').value = '';
+            document.getElementById('totalSplitDeposit').textContent = '0';
+        }
+
+        function acceptTransaction() {
+            // Perform transaction processing here (not implemented in this example)
+            // You may want to send data to a server for backend processing and database updates
+
+            // Show the generated transaction number
+            document.getElementById('transactionNumber').value = generateTransactionNumber();
+
+            // Update total amounts
+            updateTotalDeposit();
+            updateTotalWithdrawal();
+            updateTotalSplitDeposit();
+
+            // Clear form fields for a new transaction
+            document.getElementById('accountNumber').value = '';
+            document.getElementById('cashInAmount').value = '';
+            document.getElementById('onUsCheckAmount').value = '';
+            document.getElementById('notOnUsCheckAmount').value = '';
+
+            document.getElementById('check1Amount').value = '';
+            document.getElementById('check2Amount').value = '';
+
+            document.getElementById('splitCashInAmount').value = '';
+            document.getElementById('splitOnUsCheckAmount').value = '';
+            document.getElementById('splitNotOnUsCheckAmount').value = '';
+        }
+
+        // Function to update total deposit amount
+        function updateTotalDeposit() {
+            const cashInAmount = parseFloat(document.getElementById('cashInAmount').value) || 0;
+            const onUsCheckAmount = parseFloat(document.getElementById('onUsCheckAmount').value) || 0;
+            const notOnUsCheckAmount = parseFloat(document.getElementById('notOnUsCheckAmount').value) || 0;
+
+            const totalDeposit = cashInAmount + onUsCheckAmount + notOnUsCheckAmount;
+
+            document.getElementById('totalDeposit').textContent = totalDeposit.toFixed(2);
+        }
+
+        // Function to update total withdrawal amount
+        function updateTotalWithdrawal() {
+            const check1Amount = parseFloat(document.getElementById('check1Amount').value) || 0;
+            const check2Amount = parseFloat(document.getElementById('check2Amount').value) || 0;
+
+            const totalWithdrawal = check1Amount + check2Amount;
+
+            document.getElementById('totalWithdrawal').textContent = totalWithdrawal.toFixed(2);
+        }
+
+        // Function to update total split deposit amount
+        function updateTotalSplitDeposit() {
+            const splitCashInAmount = parseFloat(document.getElementById('splitCashInAmount').value) || 0;
+            const splitOnUsCheckAmount = parseFloat(document.getElementById('splitOnUsCheckAmount').value) || 0;
+            const splitNotOnUsCheckAmount = parseFloat(document.getElementById('splitNotOnUsCheckAmount').value) || 0;
+
+            const totalSplitDeposit = splitCashInAmount + splitOnUsCheckAmount + splitNotOnUsCheckAmount;
+
+            document.getElementById('totalSplitDeposit').textContent = totalSplitDeposit.toFixed(2);
         }
     </script>
 </body>
