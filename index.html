@@ -39,6 +39,7 @@
         <input type="text" id="accountNumber">
     </label>
 
+    <!-- Common Transaction Fields -->
     <label class="transaction-type-fields" id="transactionNumberLabel">
         Transaction #:
         <input type="text" id="transactionNumber" readonly>
@@ -77,11 +78,6 @@
         <label>
             Check #2 Amount:
             <input type="text" id="check2Amount" oninput="updateTotalWithdrawal()">
-        </label>
-
-        <label>
-            Total Withdrawal:
-            <div id="totalWithdrawal" readonly>0</div>
         </label>
 
         <label>
