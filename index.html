@@ -70,11 +70,6 @@
     <!-- Withdrawal Fields -->
     <div class="transaction-type-fields" id="withdrawalFields">
         <label>
-            Transaction #:
-            <input type="text" id="transactionNumberWithdrawal" readonly>
-        </label>
-
-        <label>
             Check #1 Amount:
             <input type="text" id="check1Amount" oninput="updateTotalWithdrawal()">
         </label>
@@ -117,8 +112,10 @@
     <button onclick="acceptTransaction()">Accept</button>
 
     <script>
+        let transactionNumberCounter = 1;
+
         function generateTransactionNumber() {
-            return `TX${Math.floor(1000 + Math.random() * 9000)}`;
+            return `TX${transactionNumberCounter++}`;
         }
 
         function showFields(transactionType) {
@@ -135,8 +132,6 @@
             // Set the initial transaction number when the page loads or when switching transaction types
             if (showTransactionNumber) {
                 document.getElementById('transactionNumber').value = generateTransactionNumber();
-            } else {
-                document.getElementById('transactionNumberWithdrawal').value = generateTransactionNumber();
             }
         }
 
@@ -149,7 +144,6 @@
             document.getElementById('notOnUsCheckAmount').value = '';
             document.getElementById('totalDeposit').textContent = '0';
 
-            document.getElementById('transactionNumberWithdrawal').value = '';
             document.getElementById('check1Amount').value = '';
             document.getElementById('check2Amount').value = '';
             document.getElementById('totalWithdrawal').textContent = '0';
