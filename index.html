@@ -19,7 +19,7 @@
             margin-bottom: 10px;
         }
 
-        #totalDeposit, #totalSplitDeposit {
+        #totalDeposit, #totalSplitDeposit, #totalWithdrawal {
             border: 1px solid #ccc;
             padding: 5px;
             margin-bottom: 10px;
@@ -97,6 +97,11 @@
             Check #2 Amount:
             <input type="text" id="check2Amount">
         </label>
+
+        <label>
+            Total Withdrawal:
+            <div id="totalWithdrawal" readonly>0</div>
+        </label>
     </div>
 
     <!-- Split Deposit Fields -->
@@ -117,7 +122,7 @@
         </label>
 
         <label>
-            Total Deposit (Split):
+            Total Split Deposit:
             <div id="totalSplitDeposit" readonly>0</div>
         </label>
     </div>
@@ -143,6 +148,14 @@
 
             const totalDeposit = cashIn + onUsCheck + notOnUsCheck;
             document.getElementById('totalDeposit').textContent = totalDeposit.toFixed(2);
+        }
+
+        function updateTotalWithdrawal() {
+            const check1 = parseFloat(document.getElementById('check1Amount').value) || 0;
+            const check2 = parseFloat(document.getElementById('check2Amount').value) || 0;
+
+            const totalWithdrawal = check1 + check2;
+            document.getElementById('totalWithdrawal').textContent = totalWithdrawal.toFixed(2);
         }
 
         function updateTotalSplitDeposit() {
@@ -177,6 +190,7 @@
 
             document.getElementById('check1Amount').value = '';
             document.getElementById('check2Amount').value = '';
+            document.getElementById('totalWithdrawal').textContent = '0';
 
             document.getElementById('splitCashInAmount').value = '';
             document.getElementById('splitOnUsCheckAmount').value = '';
@@ -200,6 +214,7 @@
 
             document.getElementById('check1Amount').value = '';
             document.getElementById('check2Amount').value = '';
+            document.getElementById('totalWithdrawal').textContent = '0';
 
             document.getElementById('splitCashInAmount').value = '';
             document.getElementById('splitOnUsCheckAmount').value = '';
@@ -211,6 +226,10 @@
         document.getElementById('cashInAmount').addEventListener('input', updateTotalDeposit);
         document.getElementById('onUsCheckAmount').addEventListener('input', updateTotalDeposit);
         document.getElementById('notOnUsCheckAmount').addEventListener('input', updateTotalDeposit);
+
+        // Attach event listeners to update total withdrawal on input change
+        document.getElementById('check1Amount').addEventListener('input', updateTotalWithdrawal);
+        document.getElementById('check2Amount').addEventListener('input', updateTotalWithdrawal);
 
         // Attach event listeners to update total split deposit on input change
         document.getElementById('splitCashInAmount').addEventListener('input', updateTotalSplitDeposit);
