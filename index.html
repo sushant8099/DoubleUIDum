@@ -48,17 +48,17 @@
     <div class="transaction-type-fields" id="depositFields">
         <label>
             Cash In Amount:
-            <input type="text" id="cashInAmount">
+            <input type="text" id="cashInAmount" oninput="updateTotalDeposit()">
         </label>
 
         <label>
             On Us Check Amount:
-            <input type="text" id="onUsCheckAmount">
+            <input type="text" id="onUsCheckAmount" oninput="updateTotalDeposit()">
         </label>
 
         <label>
             Not On Us Check Amount:
-            <input type="text" id="notOnUsCheckAmount">
+            <input type="text" id="notOnUsCheckAmount" oninput="updateTotalDeposit()">
         </label>
 
         <label>
@@ -76,12 +76,12 @@
 
         <label>
             Check #1 Amount:
-            <input type="text" id="check1Amount">
+            <input type="text" id="check1Amount" oninput="updateTotalWithdrawal()">
         </label>
 
         <label>
             Check #2 Amount:
-            <input type="text" id="check2Amount">
+            <input type="text" id="check2Amount" oninput="updateTotalWithdrawal()">
         </label>
 
         <label>
@@ -94,17 +94,17 @@
     <div class="transaction-type-fields" id="splitDepositFields">
         <label>
             Cash In Amount (Split):
-            <input type="text" id="splitCashInAmount">
+            <input type="text" id="splitCashInAmount" oninput="updateTotalSplitDeposit()">
         </label>
 
         <label>
             On Us Check Amount (Split):
-            <input type="text" id="splitOnUsCheckAmount">
+            <input type="text" id="splitOnUsCheckAmount" oninput="updateTotalSplitDeposit()">
         </label>
 
         <label>
             Not On Us Check Amount (Split):
-            <input type="text" id="splitNotOnUsCheckAmount">
+            <input type="text" id="splitNotOnUsCheckAmount" oninput="updateTotalSplitDeposit()">
         </label>
 
         <label>
