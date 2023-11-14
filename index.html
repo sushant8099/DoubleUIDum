@@ -30,13 +30,13 @@
         <input type="radio" name="transactionType" value="splitDeposit" onclick="showFields('splitDeposit')"> Split Deposit
     </label>
 
-    <label class="transaction-type-fields" id="transactionNumberLabelWithdrawal">
-        Transaction #:
-        <input type="text" id="transactionNumberWithdrawal" readonly>
-    </label>
-
     <!-- Withdrawal Fields -->
     <div class="transaction-type-fields" id="withdrawalFields">
+        <label>
+            Transaction #:
+            <input type="text" id="transactionNumberWithdrawal" readonly>
+        </label>
+
         <label>
             Check #1 Amount:
             <input type="text" id="check1Amount">
@@ -59,17 +59,11 @@
         }
 
         function showFields(transactionType) {
-            // Show the selected transaction-type fields
-            document.getElementById(`${transactionType}Fields`).style.display = 'block';
-
-            // Show/hide transaction number based on transaction type
-            const showTransactionNumberWithdrawal = transactionType === 'deposit' || transactionType === 'splitDeposit';
-            document.getElementById('transactionNumberLabelWithdrawal').style.display = showTransactionNumberWithdrawal ? 'block' : 'none';
-
             // Set the initial transaction number when the page loads or when switching transaction types
-            if (showTransactionNumberWithdrawal) {
-                document.getElementById('transactionNumberWithdrawal').value = generateTransactionNumber();
-            }
+            document.getElementById('transactionNumberWithdrawal').value = generateTransactionNumber();
+
+            // Show the selected transaction-type fields
+            document.getElementById('withdrawalFields').style.display = (transactionType === 'withdrawal') ? 'block' : 'none';
         }
     </script>
 </body>
