@@ -88,6 +88,11 @@
 
     <!-- Withdrawal Fields -->
     <div class="transaction-type-fields" id="withdrawalFields">
+        <label class="transaction-type-fields" id="transactionNumberLabelWithdrawal">
+            Transaction #:
+            <input type="text" id="transactionNumberWithdrawal" readonly>
+        </label>
+
         <label>
             Check #1 Amount:
             <input type="text" id="check1Amount">
@@ -135,6 +140,7 @@
 
         // Set the initial transaction number when the page loads
         document.getElementById('transactionNumber').value = generateTransactionNumber();
+        document.getElementById('transactionNumberWithdrawal').value = generateTransactionNumber();
 
         function generateTransactionNumber() {
             localStorage.setItem('transactionCount', ++transactionCount);
@@ -177,12 +183,14 @@
             // Show/hide transaction number based on transaction type
             const showTransactionNumber = transactionType !== 'withdrawal';
             document.getElementById('transactionNumberLabel').style.display = showTransactionNumber ? 'block' : 'none';
+            document.getElementById('transactionNumberLabelWithdrawal').style.display = showTransactionNumber ? 'block' : 'none';
         }
 
         function cancelTransaction() {
             // Reset form fields on cancel
             document.getElementById('accountNumber').value = '';
             document.getElementById('transactionNumber').value = '';
+            document.getElementById('transactionNumberWithdrawal').value = '';
             document.getElementById('cashInAmount').value = '';
             document.getElementById('onUsCheckAmount').value = '';
             document.getElementById('notOnUsCheckAmount').value = '';
@@ -204,6 +212,7 @@
 
             // Show the generated transaction number
             document.getElementById('transactionNumber').value = generateTransactionNumber();
+            document.getElementById('transactionNumberWithdrawal').value = generateTransactionNumber();
 
             // Clear form fields for a new transaction
             document.getElementById('accountNumber').value = '';
