@@ -59,11 +59,13 @@
         }
 
         function showFields(transactionType) {
-            // Set the initial transaction number when the page loads or when switching transaction types
-            document.getElementById('transactionNumberWithdrawal').value = generateTransactionNumber();
-
             // Show the selected transaction-type fields
             document.getElementById('withdrawalFields').style.display = (transactionType === 'withdrawal') ? 'block' : 'none';
+
+            // Set the initial transaction number when the page loads or when switching transaction types
+            if (transactionType === 'withdrawal') {
+                document.getElementById('transactionNumberWithdrawal').value = generateTransactionNumber();
+            }
         }
     </script>
 </body>
